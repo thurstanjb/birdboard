@@ -1,0 +1,65 @@
+version: '2'
+services:
+
+    composer:
+      image: prooph/composer:7.1
+      command: install
+      volumes:
+        - .:/app
+
+    node:
+      build:
+        context: ./docker/node
+      command: "npm install"
+      working_dir: /home/node/app
+      volumes:
+        - ./:/home/node/app
+      environment:
+          NODE_ENV: 'development'
+
+    app:
+        build:
+          context: ./docker/app
+          args:
+            - INSTALL_XDEBUG=${INSTALL_XDEBUG}
+            - DOCKER_HOST_IP=${DOCKER_HOST_IP}
+            - XDEBUG_IDE_KEY=${XDEBUG_IDE_KEY}
+            - XDEBUG_REMOTE_PORT=${XDEBUG_REMOTE_PORT}
+
+        links:
+            - db
+        volumes:
+            - ./:/var/www/${VHOST_URL}
+        working_dir:
+            /var/www/${VHOST_URL}
+        environment:
+            PHP_IDE_CONFIG: serverName=${VHOST_URL}
+
+    nginx:
+        build:
+          context: ./docker/nginx
+          args:
+            - VHOST_URL=${VHOST_URL}
+        ports:
+            - "80:80"
+        links:
+            - app
+        volumes:
+            - ./:/var/www/${VHOST_URL}
+        working_dir:
+            /var/www/${VHOST_URL}
+
+    db:
+        image: mysql:5.7
+        ports:
+            - "3306:3306"
+        volumes:
+            - data:/var/lib/mysql
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+            MYSQL_DATABASE: ${DB_DATABASE}
+            MYSQL_USER: ${DB_USERNAME}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+
+volumes:
+    data:
