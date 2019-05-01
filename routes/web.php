@@ -19,6 +19,7 @@ Route::group(['prefix' => '/projects', 'as' => 'projects.', 'middleware' => 'aut
     Route::get('/', 'ProjectsController@index')->name('index');
     Route::get('/create', 'ProjectsController@create')->name('create');
     Route::get('/{project}', 'ProjectsController@show')->name('show');
+    Route::get('/{project}/edit', 'ProjectsController@edit')->name('edit');
     Route::patch('/{project}', 'ProjectsController@update')->name('update');
     Route::post('/', 'ProjectsController@store')->name('store');
 
