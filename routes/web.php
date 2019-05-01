@@ -19,7 +19,11 @@ Route::group(['prefix' => '/projects', 'as' => 'projects.', 'middleware' => 'aut
     Route::get('/', 'ProjectsController@index')->name('index');
     Route::get('/create', 'ProjectsController@create')->name('create');
     Route::get('/{project}', 'ProjectsController@show')->name('show');
+    Route::patch('/{project}', 'ProjectsController@update')->name('update');
     Route::post('/', 'ProjectsController@store')->name('store');
+
+    Route::post('/{project}/tasks', 'ProjectTasksController@store')->name('store.task');
+    Route::patch('/{project}/tasks/{task}', 'ProjectTasksController@update')->name('update.task');
 });
 
 Auth::routes();
