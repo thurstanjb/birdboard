@@ -3,9 +3,12 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Arr;
 
 class Task extends Model
 {
+    use RecordsActivity;
+
     protected $table = 'tasks';
 
     protected $fillable = [
@@ -20,12 +23,10 @@ class Task extends Model
         'completed' => 'boolean'
     ];
 
+    public static $recordableEvents = ['created', 'deleted'];
+
     public function project(){
         return $this->belongsTo(Project::class);
-    }
-
-    public function activity(){
-        return $this->morphMany(Activity::class, 'subject')->latest();
     }
 
     public function path(){
@@ -36,24 +37,11 @@ class Task extends Model
         $this->update(['completed' => true]);
 
         $this->recordActivity('completed_task');
-
     }
 
     public function incomplete(){
         $this->update(['completed' => false]);
 
         $this->recordActivity('uncompleted_task');
-    }
-
-    /**
-     * Record the activity for the Project
-     *
-     * @param $description
-     */
-    public function recordActivity($description){
-        $this->activity()->create([
-            'project_id' => $this->project->id,
-            'description' => $description
-        ]);
     }
 }
