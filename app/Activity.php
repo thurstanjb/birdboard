@@ -9,7 +9,11 @@ class Activity extends Model
     protected $table = 'activities';
 
     protected $fillable = [
-        'project_id', 'description'
+        'project_id', 'description', 'changes'
+    ];
+
+    protected $casts = [
+        'changes' => 'array'
     ];
 
     public function subject(){
