@@ -9,7 +9,7 @@ class Activity extends Model
     protected $table = 'activities';
 
     protected $fillable = [
-        'project_id', 'description', 'changes'
+        'project_id', 'description', 'changes', 'user_id'
     ];
 
     protected $casts = [
@@ -18,5 +18,17 @@ class Activity extends Model
 
     public function subject(){
         return $this->morphTo();
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
+
+    public function userName(){
+        if(auth()->check() && auth()->id() === $this->user_id){
+            return 'You';
+        }
+
+        return $this->user->name;
     }
 }
