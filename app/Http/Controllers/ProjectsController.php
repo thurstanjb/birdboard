@@ -21,11 +21,8 @@ class ProjectsController extends Controller
     /**
      * @param Project $project
      * @return Factory|View
-     * @throws AuthorizationException
      */
     public function show(Project $project){
-
-        $this->authorize('show', $project);
 
         return view('projects.show', compact('project'));
     }
