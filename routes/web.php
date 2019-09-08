@@ -15,16 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::group(['prefix' => '/projects', 'as' => 'projects.', 'middleware' => 'auth'], function(){
-    Route::get('/', 'ProjectsController@index')->name('index');
-    Route::get('/create', 'ProjectsController@create')->name('create');
-    Route::get('/{project}', 'ProjectsController@show')->name('show');
-    Route::get('/{project}/edit', 'ProjectsController@edit')->name('edit');
-    Route::patch('/{project}', 'ProjectsController@update')->name('update');
-    Route::post('/', 'ProjectsController@store')->name('store');
+Route::group(['middleware' => 'auth'], function(){
 
-    Route::post('/{project}/tasks', 'ProjectTasksController@store')->name('store.task');
-    Route::patch('/{project}/tasks/{task}', 'ProjectTasksController@update')->name('update.task');
+    Route::resource('projects', 'ProjectsController');
+
+    Route::post('/projects/{project}/tasks', 'ProjectTasksController@store')->name('store.task');
+    Route::patch('/projects/{project}/tasks/{task}', 'ProjectTasksController@update')->name('update.task');
 });
 
 Auth::routes();
