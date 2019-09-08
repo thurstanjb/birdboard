@@ -13,7 +13,7 @@ use Illuminate\View\View;
 class ProjectsController extends Controller
 {
     public function index(){
-        $projects = auth()->user()->projects;
+        $projects = auth()->user()->accessibleProjects();
 
         return view('projects.index', compact('projects'));
     }
@@ -21,8 +21,10 @@ class ProjectsController extends Controller
     /**
      * @param Project $project
      * @return Factory|View
+     * @throws AuthorizationException
      */
     public function show(Project $project){
+        $this->authorize('update', $project);
 
         return view('projects.show', compact('project'));
     }
