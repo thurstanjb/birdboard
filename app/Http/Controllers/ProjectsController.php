@@ -74,7 +74,7 @@ class ProjectsController extends Controller
      * @throws \Exception
      */
     public function destroy(Project $project){
-        $this->authorize('update', $project);
+        $this->authorize('manage', $project);
 
         $project->delete();
 
@@ -88,7 +88,7 @@ class ProjectsController extends Controller
     {
         $attributes = request()->validate([
             'title' => 'sometimes|required',
-            'description' => 'sometimes|required|max:100',
+            'description' => 'sometimes|required|max:200',
             'notes' => 'nullable'
         ]);
         return $attributes;
