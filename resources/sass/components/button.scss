@@ -1,0 +1,16 @@
+.button{
+  @apply .bg-button .no-underline .rounded-lg .text-sm .py-2 .px-5;
+  color: white;
+  
+  .theme-light & {
+    -webkit-box-shadow: 0 2px 7px 0 #b0eaff;
+    -moz-box-shadow: 0 2px 7px 0 #b0eaff;
+    box-shadow: 0 2px 7px 0 #b0eaff;
+  }
+  
+  .theme-dark & {
+    -webkit-box-shadow: 0 2px 7px 0 #00658b;
+    -moz-box-shadow: 0 2px 7px 0 #00658b;
+    box-shadow: 0 2px 7px 0 #00658b;
+  }
+}

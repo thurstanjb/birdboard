@@ -5,7 +5,7 @@
     <div class="control">
         <input
                 type="text"
-                class="input bg-transparent border border-grey-light rounded p-2 text-xs w-full"
+                class="input bg-transparent border border-muted-light rounded p-2 text-xs w-full"
                 name="title"
                 placeholder="My awesome project"
                 value="{{$project->title}}"
@@ -30,7 +30,7 @@
 <div class="field">
     <div class="control">
         <button type="submit" class="button is-link mr-2">{{$buttonText}}</button>
-        <a href="{{$project->path()}}">Cancel</a>
+        <a href="{{$project->path()}}" class="text-default">Cancel</a>
     </div>
 </div>
 @if($errors->any())

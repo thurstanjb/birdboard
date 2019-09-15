@@ -3,15 +3,15 @@
 @section('content')
 
 <div class="w-full max-w-sm flex m-auto items-center">
-    <form method="POST" class="w-full bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" action="{{ route('login') }}">
+    <form method="POST" class="w-full bg-card shadow-md rounded px-8 pt-6 pb-8 mb-4" action="{{ route('login') }}">
         @csrf
         <div class="text-xl mb-4">{{ __('Login') }}</div>
 
         <div class="mb-4">
-            <label for="email" class="block text-grey-darker text-sm font-bold mb-2">{{ __('E-Mail Address') }}</label>
+            <label for="email" class="block text-sm font-bold mb-2">{{ __('E-Mail Address') }}</label>
             <input
                     id="email" type="email"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker leading-tight
+                    class="shadow appearance-none border border-muted-light rounded w-full py-2 px-3 leading-tight
                     focus:outline-none focus:shadow-outline {{ $errors->has('email') ? ' border-red' : '' }}"
                     name="email"
                     value="{{ old('email') }}"
@@ -25,11 +25,11 @@
         </div>
 
         <div class="mb-5">
-            <label for="password" class="block text-grey-darker text-sm font-bold mb-2">{{ __('Password') }}</label>
+            <label for="password" class="block text-sm font-bold mb-2">{{ __('Password') }}</label>
             <input
                     id="password"
                     type="password"
-                    class="shadow appearance-none border rounded w-full py-2 px-3 text-grey-darker mb-3
+                    class="shadow appearance-none border border-muted-light rounded w-full py-2 px-3 mb-3
                     leading-tight focus:outline-none focus:shadow-outline{{ $errors->has('password') ? ' border-red' : '' }}"
                     name="password"
                     required
@@ -56,7 +56,7 @@
             </button>
 
             @if (Route::has('password.request'))
-                <a class="inline-block align-baseline font-bold text-sm text-blue no-underline hover:text-blue-dark" href="{{ route('password.request') }}">
+                <a class="text-default text-sm" href="{{ route('password.request') }}">
                     {{ __('Forgot Your Password?') }}
                 </a>
             @endif
