@@ -36,7 +36,7 @@
                                 @method('patch')
                                 @csrf
                                 <div class="flex">
-                                    <input name="body" value="{{$task->body}}" class="bg-card text-default w-full {{$task->completed ? 'text-default' : ''}}">
+                                    <input name="body" value="{{$task->body}}" class="bg-card w-full {{$task->completed ? 'text-muted line-through' : 'text-default'}}">
                                     <input type="checkbox" name="completed" onchange="this.form.submit()" {{$task->completed ? 'checked' : ''}}>
                                 </div>
                             </form>
