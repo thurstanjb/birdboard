@@ -9,10 +9,10 @@
                         <input type="text" id="title"
                                name="title"  v-model="form.title"
                                class="bg-card text-default border border-muted-light p-2 text-xs block w-full rounded"
-                               :class="errors.title ? 'border-error' : 'border-muted-light'"
+                               :class="form.errors.title ? 'border-error' : 'border-muted-light'"
                         >
-                        <ul v-if="errors.title" class="text-error mt-1 text-xs italic">
-                            <li v-for="error in errors.title">
+                        <ul v-if="form.errors.title" class="text-error mt-1 text-xs italic">
+                            <li v-for="error in form.errors.title">
                                 {{error}}
                             </li>
                         </ul>
@@ -22,9 +22,9 @@
                         <textarea id="description" name="description"
                                   class="bg-card text-default border border-muted-light p-2 text-xs block w-full rounded"
                                   rows="7" v-model="form.description"
-                                  :class="errors.description ? 'border-error' : 'border-muted-light'"></textarea>
-                        <ul v-if="errors.description" class="text-error mt-1 text-xs italic">
-                            <li v-for="error in errors.description">
+                                  :class="form.errors.description ? 'border-error' : 'border-muted-light'"></textarea>
+                        <ul v-if="form.errors.description" class="text-error mt-1 text-xs italic">
+                            <li v-for="error in form.errors.description">
                                 {{error}}
                             </li>
                         </ul>
@@ -61,18 +61,18 @@
 </template>
 
 <script>
+    import BirdboardForm from './BirdboardForm';
     export default {
       data(){
         return {
-          form:{
+          form: new BirdboardForm({
             title: '',
             description: '',
             tasks: [
               {body: ''}
             ]
-          },
-          errors: []
-,          new_task: {
+          }),
+          new_task: {
             body: ''
           }
         }
@@ -83,16 +83,17 @@
           this.form.tasks.push(_.clone(this.new_task));
         },
         cancel(){
-          this.form.tasks = [_.clone(this.new_task)];
+          this.form.reset();
           this.$modal.hide('new-project')
         },
         submit(){
-          axios.post('/projects', this.form)
+          if(! this.form.tasks[0].body){
+            delete this.form.originalData.tasks;
+          }
+
+          this.form.submit('/projects')
             .then(response => {
                 location = response.data.message;
-            })
-            .catch(error => {
-              this.errors = error.response.data.errors;
             })
         }
       }

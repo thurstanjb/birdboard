@@ -1763,6 +1763,7 @@ module.exports = {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _BirdboardForm__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./BirdboardForm */ "./resources/js/components/BirdboardForm.js");
 //
 //
 //
@@ -1825,17 +1826,17 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
-      form: {
+      form: new _BirdboardForm__WEBPACK_IMPORTED_MODULE_0__["default"]({
         title: '',
         description: '',
         tasks: [{
           body: ''
         }]
-      },
-      errors: [],
+      }),
       new_task: {
         body: ''
       }
@@ -1846,16 +1847,16 @@ __webpack_require__.r(__webpack_exports__);
       this.form.tasks.push(_.clone(this.new_task));
     },
     cancel: function cancel() {
-      this.form.tasks = [_.clone(this.new_task)];
+      this.form.reset();
       this.$modal.hide('new-project');
     },
     submit: function submit() {
-      var _this = this;
+      if (!this.form.tasks[0].body) {
+        delete this.form.originalData.tasks;
+      }
 
-      axios.post('/projects', this.form).then(function (response) {
+      this.form.submit('/projects').then(function (response) {
         location = response.data.message;
-      }).catch(function (error) {
-        _this.errors = error.response.data.errors;
       });
     }
   }
@@ -37006,7 +37007,7 @@ var render = function() {
                   ],
                   staticClass:
                     "bg-card text-default border border-muted-light p-2 text-xs block w-full rounded",
-                  class: _vm.errors.title
+                  class: _vm.form.errors.title
                     ? "border-error"
                     : "border-muted-light",
                   attrs: { type: "text", id: "title", name: "title" },
@@ -37021,11 +37022,11 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.title
+                _vm.form.errors.title
                   ? _c(
                       "ul",
                       { staticClass: "text-error mt-1 text-xs italic" },
-                      _vm._l(_vm.errors.title, function(error) {
+                      _vm._l(_vm.form.errors.title, function(error) {
                         return _c("li", [
                           _vm._v(
                             "\n                            " +
@@ -37060,7 +37061,7 @@ var render = function() {
                   ],
                   staticClass:
                     "bg-card text-default border border-muted-light p-2 text-xs block w-full rounded",
-                  class: _vm.errors.description
+                  class: _vm.form.errors.description
                     ? "border-error"
                     : "border-muted-light",
                   attrs: { id: "description", name: "description", rows: "7" },
@@ -37075,11 +37076,11 @@ var render = function() {
                   }
                 }),
                 _vm._v(" "),
-                _vm.errors.description
+                _vm.form.errors.description
                   ? _c(
                       "ul",
                       { staticClass: "text-error mt-1 text-xs italic" },
-                      _vm._l(_vm.errors.description, function(error) {
+                      _vm._l(_vm.form.errors.description, function(error) {
                         return _c("li", [
                           _vm._v(
                             "\n                            " +
@@ -49493,6 +49494,76 @@ if (token) {
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     encrypted: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/components/BirdboardForm.js":
+/*!**************************************************!*\
+  !*** ./resources/js/components/BirdboardForm.js ***!
+  \**************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BirboardForm =
+/*#__PURE__*/
+function () {
+  function BirboardForm(data) {
+    _classCallCheck(this, BirboardForm);
+
+    this.originalData = JSON.parse(JSON.stringify(data));
+    this.errors = [];
+    this.submitted = false;
+    this.reset();
+  }
+
+  _createClass(BirboardForm, [{
+    key: "data",
+    value: function data() {
+      var _this = this;
+
+      return Object.keys(this.originalData).reduce(function (data, attribute) {
+        data[attribute] = _this[attribute];
+        return data;
+      }, {});
+    }
+  }, {
+    key: "submit",
+    value: function submit(endpoint) {
+      return axios.post(endpoint, this.data()).catch(this.onFail.bind(this)).then(this.onSuccess.bind(this));
+    }
+  }, {
+    key: "onFail",
+    value: function onFail(error) {
+      this.errors = error.response.data.errors;
+      this.submitted = false;
+      throw error;
+    }
+  }, {
+    key: "onSuccess",
+    value: function onSuccess(response) {
+      this.submitted = true;
+      this.errors = {};
+      return response;
+    }
+  }, {
+    key: "reset",
+    value: function reset() {
+      Object.assign(this, this.originalData);
+    }
+  }]);
+
+  return BirboardForm;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (BirboardForm);
 
 /***/ }),
 
