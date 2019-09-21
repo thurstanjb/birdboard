@@ -53,17 +53,21 @@
                                 @endif
                             @else
                                 <theme-switcher></theme-switcher>
-                                <a id="navbarDropdown"
-                                   class="flex items-center text-default no-underline text-sm mr-2"
-                                   href="#" role="button"
-                                   data-toggle="dropdown"
-                                   aria-haspopup="true"
-                                   aria-expanded="false"
-                                   v-pre
-                                >
-                                    <img width="25" class="rounded-full mr-3" src="{{gravatar_url(auth()->user()->email)}}">
-                                    {{auth()->user()->name}}
-                                </a>
+                                <dropdown align="right" width="100%">
+                                    <template v-slot:trigger>
+                                        <button class="flex items-center text-default no-underline text-sm mr-2">
+                                            <img width="25" class="rounded-full mr-3" src="{{gravatar_url(auth()->user()->email)}}">
+                                            {{auth()->user()->name}}
+                                        </button>
+                                    </template>
+
+                                    <form action="/logout" method="post">
+                                        @csrf
+                                        <button class="dropdown-menu-link w-full text-left">Logout</button>
+                                    </form>
+
+                                </dropdown>
+
                             @endguest
                         </div>
                     </div>
