@@ -36,7 +36,7 @@
                         <input type="text" v-for="task in form.tasks"
                                class="bg-card text-default border border-muted-light p-2 text-xs block w-full rounded mb-2"
                                placeholder="Enter your task..."
-                               v-model="task.value"
+                               v-model="task.body"
                         >
                     </div>
 
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <footer class="flex justify-end">
-                <button class="button is-outlined mr-2" @click="cancel">Cancel</button>
+                <button type="button" class="button is-outlined mr-2" @click="cancel">Cancel</button>
                 <button class="button">Create Project</button>
             </footer>
         </form>
@@ -68,12 +68,12 @@
             title: '',
             description: '',
             tasks: [
-              {value: ''}
+              {body: ''}
             ]
           },
           errors: []
 ,          new_task: {
-            value: ''
+            body: ''
           }
         }
       },
